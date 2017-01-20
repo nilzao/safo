@@ -22,4 +22,6 @@ public @interface SafoComponent {
 
 	public boolean ignore() default false;
 
+	public int order() default 999;
+
 }

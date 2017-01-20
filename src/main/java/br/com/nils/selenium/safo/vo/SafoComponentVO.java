@@ -1,11 +1,12 @@
 package br.com.nils.selenium.safo.vo;
 
-public class SafoComponentVO {
+public class SafoComponentVO implements Comparable<SafoComponentVO> {
 
 	private String id;
 	private String xpath;
 	private String className;
 	private int resultPosition;
+	private int order = 999;
 	private Object valueToPut;
 
 	public Object getValueToPut() {
@@ -48,9 +49,25 @@ public class SafoComponentVO {
 		this.resultPosition = resultPosition;
 	}
 
+	public int getOrder() {
+		return order;
+	}
+
+	public void setOrder(int order) {
+		this.order = order;
+	}
+
 	public String toString() {
-		return "id: [" + id + "], xpath: [" + xpath + "], className: [" + className + "], resultPosition: [" + resultPosition + "] valueToPut: [" + valueToPut
-				+ "]";
+		return "id: [" + id + "], xpath: [" + xpath + "], className: [" + className + "], resultPosition: [" + resultPosition + " order: " + order + "]"
+				+ "] valueToPut: [" + valueToPut + "]";
+	}
+
+	@Override
+	public int compareTo(SafoComponentVO o) {
+		if (this.order >= o.getOrder()) {
+			return 1;
+		}
+		return -1;
 	}
 
 }

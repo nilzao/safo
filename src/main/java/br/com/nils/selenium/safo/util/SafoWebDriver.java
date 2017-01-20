@@ -1,8 +1,12 @@
 package br.com.nils.selenium.safo.util;
 
+import java.io.Serializable;
+import java.util.List;
+
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import br.com.nils.selenium.safo.reflection.FieldsToFill;
 import br.com.nils.selenium.safo.vo.SafoComponentVO;
 
 public class SafoWebDriver {
@@ -35,6 +39,14 @@ public class SafoWebDriver {
 		String valueToPut = (String) safoComponentVO.getValueToPut();
 		webElement.click();
 		webElement.sendKeys(valueToPut);
+	}
+
+	public void fillWithSerializable(Serializable object) {
+		FieldsToFill fieldsToFill = new FieldsToFill(object);
+		List<SafoComponentVO> compToFind = fieldsToFill.getSafoComponentList();
+		for (SafoComponentVO componentToFindVO : compToFind) {
+			fillWithSafoComp(componentToFindVO);
+		}
 	}
 
 }

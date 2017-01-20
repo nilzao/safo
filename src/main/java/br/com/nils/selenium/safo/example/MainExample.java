@@ -22,11 +22,7 @@ public class MainExample {
 
 		SafoWebDriver safoWebDriver = new SafoWebDriver(firefoxDriver);
 		Serializable loadObject = JaxbXml.loadObject("target/vai.xml");
-		FieldsToFill fieldsToFill = new FieldsToFill(loadObject);
-		List<SafoComponentVO> compToFind = fieldsToFill.getSafoComponentList();
-		for (SafoComponentVO componentToFindVO : compToFind) {
-			safoWebDriver.fillWithSafoComp(componentToFindVO);
-		}
+		safoWebDriver.fillWithSerializable(loadObject);
 	}
 
 	private static void getFirefox() throws Exception {

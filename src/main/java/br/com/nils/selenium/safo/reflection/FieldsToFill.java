@@ -2,6 +2,7 @@ package br.com.nils.selenium.safo.reflection;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import br.com.nils.selenium.safo.annotations.SafoComponent;
@@ -37,13 +38,18 @@ public class FieldsToFill {
 				SafoComponent compToFindAnnotation = field.getAnnotation(SafoComponent.class);
 				ignoreComponent = compToFindAnnotation.ignore();
 				componentToFindVO.setClassName(compToFindAnnotation.className());
-				componentToFindVO.setId(compToFindAnnotation.id());
+				String id = compToFindAnnotation.id();
+				if (id != null && !id.isEmpty()) {
+					componentToFindVO.setId(id);
+				}
 				componentToFindVO.setResultPosition(compToFindAnnotation.resultPosition());
 				componentToFindVO.setXpath(compToFindAnnotation.xpath());
+				componentToFindVO.setOrder(compToFindAnnotation.order());
 			}
 			if (!ignoreComponent) {
 				compToFind.add(componentToFindVO);
 			}
 		}
+		Collections.sort(compToFind);
 	}
 }
