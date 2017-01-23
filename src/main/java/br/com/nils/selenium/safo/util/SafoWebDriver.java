@@ -40,7 +40,11 @@ public class SafoWebDriver {
 		WebElement webElement = findElementBySafoComp(safoComponentVO);
 		String valueToPut = (String) safoComponentVO.getValueToPut();
 		webElement.click();
-		webElement.sendKeys(valueToPut);
+		if ("select".equals(webElement.getTagName())) {
+			clickSelectOption(webElement, valueToPut);
+		} else {
+			webElement.sendKeys(valueToPut);
+		}
 		if (safoComponentVO.isForceLostFocus()) {
 			runOnChange(webElement);
 		}
@@ -60,4 +64,34 @@ public class SafoWebDriver {
 		JavascriptExecutor jsExecutor = (JavascriptExecutor) remoteWebDriver;
 		jsExecutor.executeScript("arguments[0].onchange();", webElement);
 	}
+
+	public void clickSelectOption(WebElement select, String text) {
+		if (!clickSelectOptionByValue(select, text)) {
+			clickSelectOptionByText(select, text);
+		}
+	}
+
+	public void clickSelectOptionByText(WebElement select, String text) {
+		select.click();
+		List<WebElement> options = select.findElements(By.tagName("option"));
+		for (WebElement option : options) {
+			if (text.equals(option.getText())) {
+				option.click();
+				break;
+			}
+		}
+	}
+
+	public boolean clickSelectOptionByValue(WebElement select, String value) {
+		select.click();
+		List<WebElement> options = select.findElements(By.tagName("option"));
+		for (WebElement option : options) {
+			if (value.equals(option.getAttribute("value"))) {
+				option.click();
+				return true;
+			}
+		}
+		return false;
+	}
+
 }
