@@ -48,6 +48,7 @@ public class FieldsToFill {
 				componentToFindVO.setXpath(compToFindAnnotation.xpath());
 				componentToFindVO.setOrder(compToFindAnnotation.order());
 				componentToFindVO.setForceLostFocus(compToFindAnnotation.forceLostFocus());
+				componentToFindVO.setAjaxWait(compToFindAnnotation.ajaxWait());
 			}
 			if (!ignoreComponent) {
 				compToFind.add(componentToFindVO);

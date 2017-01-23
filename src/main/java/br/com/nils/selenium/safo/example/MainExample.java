@@ -2,16 +2,14 @@ package br.com.nils.selenium.safo.example;
 
 import java.io.Serializable;
 import java.net.URL;
-import java.util.List;
 
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import br.com.nils.selenium.safo.reflection.FieldsToFill;
+import br.com.nils.selenium.safo.util.AjaxWait;
 import br.com.nils.selenium.safo.util.JaxbXml;
 import br.com.nils.selenium.safo.util.SafoWebDriver;
-import br.com.nils.selenium.safo.vo.SafoComponentVO;
 
 public class MainExample {
 
@@ -19,8 +17,8 @@ public class MainExample {
 		System.setProperty("webdriver.gecko.driver", "/opt/selenium/geckodriver/geckodriver");
 		FirefoxDriver firefoxDriver = new FirefoxDriver();
 		firefoxDriver.get("https://mdn.mozillademos.org/en-US/docs/Web/Guide/HTML/Forms/My_first_HTML_form/Example$samples/A_simple_form?revision=1107395");
-
-		SafoWebDriver safoWebDriver = new SafoWebDriver(firefoxDriver);
+		AjaxWait ajaxWait = new AjaxWait();
+		SafoWebDriver safoWebDriver = new SafoWebDriver(firefoxDriver, ajaxWait);
 		Serializable loadObject = JaxbXml.loadObject("target/vai.xml");
 		safoWebDriver.fillWithSerializable(loadObject);
 	}

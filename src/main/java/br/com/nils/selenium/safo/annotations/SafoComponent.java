@@ -26,4 +26,6 @@ public @interface SafoComponent {
 
 	public boolean forceLostFocus() default false;
 
+	boolean ajaxWait() default false;
+
 }

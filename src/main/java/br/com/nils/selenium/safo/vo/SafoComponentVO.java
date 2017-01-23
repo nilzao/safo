@@ -9,6 +9,7 @@ public class SafoComponentVO implements Comparable<SafoComponentVO> {
 	private int order = 999;
 	private Object valueToPut;
 	private boolean forceLostFocus;
+	private boolean ajaxWait;
 
 	public Object getValueToPut() {
 		return valueToPut;
@@ -64,6 +65,14 @@ public class SafoComponentVO implements Comparable<SafoComponentVO> {
 
 	public void setForceLostFocus(boolean forceLostFocus) {
 		this.forceLostFocus = forceLostFocus;
+	}
+
+	public boolean isAjaxWait() {
+		return ajaxWait;
+	}
+
+	public void setAjaxWait(boolean ajaxWait) {
+		this.ajaxWait = ajaxWait;
 	}
 
 	@Override

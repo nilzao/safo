@@ -14,9 +14,11 @@ import br.com.nils.selenium.safo.vo.SafoComponentVO;
 public class SafoWebDriver {
 
 	private RemoteWebDriver remoteWebDriver;
+	private IAjaxWait ajaxWait;
 
-	public SafoWebDriver(RemoteWebDriver remoteWebDriver) {
+	public SafoWebDriver(RemoteWebDriver remoteWebDriver, IAjaxWait ajaxWait) {
 		this.remoteWebDriver = remoteWebDriver;
+		this.ajaxWait = ajaxWait;
 	}
 
 	public WebElement findElementBySafoComp(SafoComponentVO safoComponentVO) {
@@ -47,6 +49,9 @@ public class SafoWebDriver {
 		}
 		if (safoComponentVO.isForceLostFocus()) {
 			runOnChange(webElement);
+		}
+		if (safoComponentVO.isAjaxWait()) {
+			ajaxWait.ajaxWait();
 		}
 	}
 
