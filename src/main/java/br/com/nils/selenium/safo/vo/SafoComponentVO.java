@@ -8,6 +8,7 @@ public class SafoComponentVO implements Comparable<SafoComponentVO> {
 	private int resultPosition;
 	private int order = 999;
 	private Object valueToPut;
+	private boolean forceLostFocus;
 
 	public Object getValueToPut() {
 		return valueToPut;
@@ -57,9 +58,18 @@ public class SafoComponentVO implements Comparable<SafoComponentVO> {
 		this.order = order;
 	}
 
+	public boolean isForceLostFocus() {
+		return forceLostFocus;
+	}
+
+	public void setForceLostFocus(boolean forceLostFocus) {
+		this.forceLostFocus = forceLostFocus;
+	}
+
+	@Override
 	public String toString() {
-		return "id: [" + id + "], xpath: [" + xpath + "], className: [" + className + "], resultPosition: [" + resultPosition + " order: " + order + "]"
-				+ "] valueToPut: [" + valueToPut + "]";
+		return "id: [" + id + "], xpath: [" + xpath + "], className: [" + className + "], resultPosition: [" + resultPosition + " order: " + order + "]" + "] valueToPut: ["
+				+ valueToPut + "]";
 	}
 
 	@Override

@@ -3,6 +3,8 @@ package br.com.nils.selenium.safo.util;
 import java.io.Serializable;
 import java.util.List;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -39,6 +41,9 @@ public class SafoWebDriver {
 		String valueToPut = (String) safoComponentVO.getValueToPut();
 		webElement.click();
 		webElement.sendKeys(valueToPut);
+		if (safoComponentVO.isForceLostFocus()) {
+			runOnChange(webElement);
+		}
 	}
 
 	public void fillWithSerializable(Serializable object) {
@@ -49,4 +54,10 @@ public class SafoWebDriver {
 		}
 	}
 
+	public void runOnChange(WebElement webElement) {
+		WebElement parent = webElement.findElement(By.xpath("./.."));
+		parent.click();
+		JavascriptExecutor jsExecutor = (JavascriptExecutor) remoteWebDriver;
+		jsExecutor.executeScript("arguments[0].onchange();", webElement);
+	}
 }

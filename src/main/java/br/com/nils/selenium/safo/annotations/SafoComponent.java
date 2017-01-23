@@ -24,4 +24,6 @@ public @interface SafoComponent {
 
 	public int order() default 999;
 
+	public boolean forceLostFocus() default false;
+
 }
