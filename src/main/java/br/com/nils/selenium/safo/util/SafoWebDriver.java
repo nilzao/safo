@@ -44,7 +44,7 @@ public class SafoWebDriver {
 		webElement.click();
 		if ("select".equals(webElement.getTagName())) {
 			clickSelectOption(webElement, valueToPut);
-		} else {
+		} else if (!"submit".equals(webElement.getAttribute("type"))) {
 			webElement.sendKeys(valueToPut);
 		}
 		if (safoComponentVO.isForceLostFocus()) {
