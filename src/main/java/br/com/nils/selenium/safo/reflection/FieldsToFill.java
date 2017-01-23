@@ -39,8 +39,10 @@ public class FieldsToFill {
 				ignoreComponent = compToFindAnnotation.ignore();
 				componentToFindVO.setClassName(compToFindAnnotation.className());
 				String id = compToFindAnnotation.id();
-				if (id != null && !id.isEmpty()) {
+				if (!"#".equals(id)) {
 					componentToFindVO.setId(id);
+				} else {
+					componentToFindVO.setId("");
 				}
 				componentToFindVO.setResultPosition(compToFindAnnotation.resultPosition());
 				componentToFindVO.setXpath(compToFindAnnotation.xpath());

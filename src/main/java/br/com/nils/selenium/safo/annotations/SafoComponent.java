@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Inherited
 public @interface SafoComponent {
 
-	public String id() default "";
+	public String id() default "#";
 
 	public String xpath() default "";
 
