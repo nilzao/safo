@@ -51,7 +51,7 @@ public class SafoWebDriver {
 			runOnChange(webElement);
 		}
 		if (safoComponentVO.isAjaxWait()) {
-			ajaxWait.ajaxWait();
+			ajaxWait.ajaxWait(remoteWebDriver);
 		}
 	}
 
