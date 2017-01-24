@@ -4,15 +4,12 @@ import java.lang.reflect.Field;
 
 public class FillEmpty {
 
-	private Object objectTmp;
-
-	public FillEmpty(Object objectTmp) {
-		this.objectTmp = objectTmp;
+	public static void fillObject(Object objectTmp) {
 		Field[] allFields = AllFieldsReflection.getAllFields(objectTmp.getClass());
-		fillObject(allFields);
+		fillObject(allFields, objectTmp);
 	}
 
-	private void fillObject(Field[] fields) {
+	private static void fillObject(Field[] fields, Object objectTmp) {
 		Field.setAccessible(fields, Boolean.TRUE);
 		for (Field field : fields) {
 			try {
@@ -23,10 +20,6 @@ public class FillEmpty {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	public Object getObjectFilled() {
-		return objectTmp;
 	}
 
 }
