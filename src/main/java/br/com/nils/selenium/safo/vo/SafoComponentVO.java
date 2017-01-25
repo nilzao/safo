@@ -10,6 +10,7 @@ public class SafoComponentVO implements Comparable<SafoComponentVO> {
 	private Object valueToPut;
 	private boolean forceLostFocus;
 	private boolean ajaxWait;
+	private boolean clearBefore;
 
 	public Object getValueToPut() {
 		return valueToPut;
@@ -73,6 +74,14 @@ public class SafoComponentVO implements Comparable<SafoComponentVO> {
 
 	public void setAjaxWait(boolean ajaxWait) {
 		this.ajaxWait = ajaxWait;
+	}
+
+	public boolean isClearBefore() {
+		return clearBefore;
+	}
+
+	public void setClearBefore(boolean clearBefore) {
+		this.clearBefore = clearBefore;
 	}
 
 	@Override

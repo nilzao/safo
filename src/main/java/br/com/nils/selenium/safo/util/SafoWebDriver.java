@@ -39,9 +39,18 @@ public class SafoWebDriver {
 	}
 
 	public void fillWithSafoComp(SafoComponentVO safoComponentVO) {
+		if (isSafoValueNull(safoComponentVO)) {
+			return;
+		}
 		WebElement webElement = findElementBySafoComp(safoComponentVO);
+		if (!webElement.isEnabled()) {
+			return;
+		}
 		String valueToPut = (String) safoComponentVO.getValueToPut();
 		webElement.click();
+		if (clearBefore(webElement, safoComponentVO)) {
+			return;
+		}
 		if ("select".equals(webElement.getTagName())) {
 			clickSelectOption(webElement, valueToPut);
 		} else if (!"submit".equals(webElement.getAttribute("type"))) {
@@ -50,9 +59,31 @@ public class SafoWebDriver {
 		if (safoComponentVO.isForceLostFocus()) {
 			runOnChange(webElement);
 		}
+		ajaxWait(safoComponentVO);
+	}
+
+	private boolean clearBefore(WebElement webElement, SafoComponentVO safoComponentVO) {
+		if (safoComponentVO.isClearBefore()) {
+			webElement.clear();
+			ajaxWait(safoComponentVO);
+			safoComponentVO.setClearBefore(false);
+			fillWithSafoComp(safoComponentVO);
+			return true;
+		}
+		return false;
+	}
+
+	private void ajaxWait(SafoComponentVO safoComponentVO) {
 		if (safoComponentVO.isAjaxWait()) {
 			ajaxWait.ajaxWait(remoteWebDriver);
 		}
+	}
+
+	private boolean isSafoValueNull(SafoComponentVO safoComponentVO) {
+		if (safoComponentVO.getValueToPut() == null) {
+			return true;
+		}
+		return false;
 	}
 
 	public void fillWithSerializable(Serializable object) {
