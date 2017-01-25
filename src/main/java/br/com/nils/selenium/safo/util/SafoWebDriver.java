@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.Select;
 
 import br.com.nils.selenium.safo.reflection.FieldsToFill;
 import br.com.nils.selenium.safo.vo.SafoComponentVO;
@@ -64,13 +65,22 @@ public class SafoWebDriver {
 
 	private boolean clearBefore(WebElement webElement, SafoComponentVO safoComponentVO) {
 		if (safoComponentVO.isClearBefore()) {
-			webElement.clear();
-			ajaxWait(safoComponentVO);
-			safoComponentVO.setClearBefore(false);
-			fillWithSafoComp(safoComponentVO);
+			if ("select".equals(webElement.getTagName())) {
+				Select select = new Select(webElement);
+				select.selectByIndex(0);
+			} else {
+				webElement.clear();
+			}
+			clearBefore(safoComponentVO);
 			return true;
 		}
 		return false;
+	}
+
+	private void clearBefore(SafoComponentVO safoComponentVO) {
+		ajaxWait(safoComponentVO);
+		safoComponentVO.setClearBefore(false);
+		fillWithSafoComp(safoComponentVO);
 	}
 
 	private void ajaxWait(SafoComponentVO safoComponentVO) {
