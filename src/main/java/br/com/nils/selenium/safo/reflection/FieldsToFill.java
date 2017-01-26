@@ -27,7 +27,6 @@ public class FieldsToFill {
 			SafoComponentVO componentToFindVO = new SafoComponentVO();
 			componentToFindVO.setId(field.getName());
 			Object valueToPut = null;
-			boolean ignoreComponent = false;
 			try {
 				valueToPut = field.get(objectTmp);
 				componentToFindVO.setValueToPut(valueToPut);
@@ -35,26 +34,30 @@ public class FieldsToFill {
 				e.printStackTrace();
 			}
 			if (field.isAnnotationPresent(SafoComponent.class)) {
-				SafoComponent compToFindAnnotation = field.getAnnotation(SafoComponent.class);
-				ignoreComponent = compToFindAnnotation.ignore();
-				componentToFindVO.setClassName(compToFindAnnotation.className());
-				String id = compToFindAnnotation.id();
-				if (!"#".equals(id)) {
-					componentToFindVO.setId(id);
-				} else {
-					componentToFindVO.setId("");
-				}
-				componentToFindVO.setResultPosition(compToFindAnnotation.resultPosition());
-				componentToFindVO.setXpath(compToFindAnnotation.xpath());
-				componentToFindVO.setOrder(compToFindAnnotation.order());
-				componentToFindVO.setForceLostFocus(compToFindAnnotation.forceLostFocus());
-				componentToFindVO.setAjaxWait(compToFindAnnotation.ajaxWait());
-				componentToFindVO.setClearBefore(compToFindAnnotation.clearBefore());
-			}
-			if (!ignoreComponent) {
-				compToFind.add(componentToFindVO);
+				fillWithAnnotation(componentToFindVO, field);
 			}
 		}
 		Collections.sort(compToFind);
+	}
+
+	private void fillWithAnnotation(SafoComponentVO componentToFindVO, Field field) {
+		SafoComponent compToFindAnnotation = field.getAnnotation(SafoComponent.class);
+		if (!compToFindAnnotation.ignore()) {
+			String className = compToFindAnnotation.className();
+			String xpath = compToFindAnnotation.xpath();
+			String id = compToFindAnnotation.id();
+			componentToFindVO.setClassName(className);
+			componentToFindVO.setXpath(xpath);
+			if (id.isEmpty() && className.isEmpty() && xpath.isEmpty()) {
+				id = field.getName();
+			}
+			componentToFindVO.setId(id);
+			componentToFindVO.setResultPosition(compToFindAnnotation.resultPosition());
+			componentToFindVO.setOrder(compToFindAnnotation.order());
+			componentToFindVO.setForceLostFocus(compToFindAnnotation.forceLostFocus());
+			componentToFindVO.setAjaxWait(compToFindAnnotation.ajaxWait());
+			componentToFindVO.setClearBefore(compToFindAnnotation.clearBefore());
+			compToFind.add(componentToFindVO);
+		}
 	}
 }
