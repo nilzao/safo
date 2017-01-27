@@ -30,4 +30,6 @@ public @interface SafoComponent {
 
 	public boolean ajaxWait() default false;
 
+	public boolean forceBlur() default false;
+
 }

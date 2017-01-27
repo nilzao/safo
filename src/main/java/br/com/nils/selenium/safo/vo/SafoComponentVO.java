@@ -9,6 +9,7 @@ public class SafoComponentVO implements Comparable<SafoComponentVO> {
 	private int order = 999;
 	private Object valueToPut;
 	private boolean forceLostFocus;
+	private boolean forceBlur;
 	private boolean ajaxWait;
 	private boolean clearBefore;
 
@@ -82,6 +83,14 @@ public class SafoComponentVO implements Comparable<SafoComponentVO> {
 
 	public void setClearBefore(boolean clearBefore) {
 		this.clearBefore = clearBefore;
+	}
+
+	public boolean isForceBlur() {
+		return forceBlur;
+	}
+
+	public void setForceBlur(boolean forceBlur) {
+		this.forceBlur = forceBlur;
 	}
 
 	@Override

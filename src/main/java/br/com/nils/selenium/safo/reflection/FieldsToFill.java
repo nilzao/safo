@@ -35,6 +35,8 @@ public class FieldsToFill {
 			}
 			if (field.isAnnotationPresent(SafoComponent.class)) {
 				fillWithAnnotation(componentToFindVO, field);
+			} else {
+				compToFind.add(componentToFindVO);
 			}
 		}
 		Collections.sort(compToFind);
@@ -55,6 +57,7 @@ public class FieldsToFill {
 			componentToFindVO.setResultPosition(compToFindAnnotation.resultPosition());
 			componentToFindVO.setOrder(compToFindAnnotation.order());
 			componentToFindVO.setForceLostFocus(compToFindAnnotation.forceLostFocus());
+			componentToFindVO.setForceBlur(compToFindAnnotation.forceBlur());
 			componentToFindVO.setAjaxWait(compToFindAnnotation.ajaxWait());
 			componentToFindVO.setClearBefore(compToFindAnnotation.clearBefore());
 			compToFind.add(componentToFindVO);

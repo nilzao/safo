@@ -40,6 +40,7 @@ public class SafoWebDriver {
 	}
 
 	public void fillWithSafoComp(SafoComponentVO safoComponentVO) {
+		// FIXME avoid StaleElementReferenceException with components reloading page
 		if (isSafoValueNull(safoComponentVO)) {
 			return;
 		}
@@ -59,6 +60,9 @@ public class SafoWebDriver {
 		}
 		if (safoComponentVO.isForceLostFocus()) {
 			runOnChange(webElement);
+		}
+		if (safoComponentVO.isForceBlur()) {
+			runOnBlur(webElement);
 		}
 		ajaxWait(safoComponentVO);
 	}
@@ -109,6 +113,13 @@ public class SafoWebDriver {
 		parent.click();
 		JavascriptExecutor jsExecutor = (JavascriptExecutor) remoteWebDriver;
 		jsExecutor.executeScript("arguments[0].onchange();", webElement);
+	}
+
+	public void runOnBlur(WebElement webElement) {
+		WebElement parent = webElement.findElement(By.xpath("./.."));
+		parent.click();
+		JavascriptExecutor jsExecutor = (JavascriptExecutor) remoteWebDriver;
+		jsExecutor.executeScript("$(arguments[0]).blur();", webElement);
 	}
 
 	public void clickSelectOption(WebElement select, String text) {
