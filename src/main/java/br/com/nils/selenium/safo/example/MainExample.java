@@ -10,6 +10,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import br.com.nils.selenium.safo.util.AjaxWait;
 import br.com.nils.selenium.safo.util.JaxbXml;
 import br.com.nils.selenium.safo.util.SafoWebDriver;
+import br.com.nils.selenium.safo.util.ScrollAuto;
 
 public class MainExample {
 
@@ -18,7 +19,8 @@ public class MainExample {
 		FirefoxDriver firefoxDriver = new FirefoxDriver();
 		firefoxDriver.get("https://mdn.mozillademos.org/en-US/docs/Web/Guide/HTML/Forms/My_first_HTML_form/Example$samples/A_simple_form?revision=1107395");
 		AjaxWait ajaxWait = new AjaxWait();
-		SafoWebDriver safoWebDriver = new SafoWebDriver(firefoxDriver, ajaxWait);
+		ScrollAuto scrollAuto = new ScrollAuto();
+		SafoWebDriver safoWebDriver = new SafoWebDriver(firefoxDriver, ajaxWait, scrollAuto);
 		Serializable loadObject = JaxbXml.loadObject("target/vai.xml");
 		safoWebDriver.fillWithSerializable(loadObject);
 	}

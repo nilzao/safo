@@ -16,10 +16,12 @@ public class SafoWebDriver {
 
 	private RemoteWebDriver remoteWebDriver;
 	private IAjaxWait ajaxWait;
+	private IScrollAuto scrollAuto;
 
-	public SafoWebDriver(RemoteWebDriver remoteWebDriver, IAjaxWait ajaxWait) {
+	public SafoWebDriver(RemoteWebDriver remoteWebDriver, IAjaxWait ajaxWait, IScrollAuto scrollAuto) {
 		this.remoteWebDriver = remoteWebDriver;
 		this.ajaxWait = ajaxWait;
+		this.scrollAuto = scrollAuto;
 	}
 
 	public WebElement findElementBySafoComp(SafoComponentVO safoComponentVO) {
@@ -45,17 +47,20 @@ public class SafoWebDriver {
 			return;
 		}
 		WebElement webElement = findElementBySafoComp(safoComponentVO);
-		if (!webElement.isEnabled()) {
+		if (!webElement.isEnabled() || !webElement.isDisplayed()) {
 			return;
 		}
+		String tagName = webElement.getTagName();
 		String valueToPut = (String) safoComponentVO.getValueToPut();
+		String attributeType = webElement.getAttribute("type");
+		scrollAuto.scrollAuto(remoteWebDriver, webElement);
 		webElement.click();
 		if (clearBefore(webElement, safoComponentVO)) {
 			return;
 		}
-		if ("select".equals(webElement.getTagName())) {
+		if ("select".equals(tagName)) {
 			clickSelectOption(webElement, valueToPut);
-		} else if (!"submit".equals(webElement.getAttribute("type"))) {
+		} else if (!"submit".equals(attributeType)) {
 			webElement.sendKeys(valueToPut);
 		}
 		if (safoComponentVO.isForceLostFocus()) {
