@@ -55,21 +55,26 @@ public class SafoWebDriver {
 		String attributeType = webElement.getAttribute("type");
 		scrollAuto.scrollAuto(remoteWebDriver, webElement);
 		webElement.click();
-		if (clearBefore(webElement, safoComponentVO)) {
-			return;
+		try {
+			if (clearBefore(webElement, safoComponentVO)) {
+				return;
+			}
+			if ("select".equals(tagName)) {
+				clickSelectOption(webElement, valueToPut);
+			} else if (!"submit".equals(attributeType)) {
+				webElement.sendKeys(valueToPut);
+			}
+			if (safoComponentVO.isForceLostFocus()) {
+				runOnChange(webElement);
+			}
+			if (safoComponentVO.isForceBlur()) {
+				runOnBlur(webElement);
+			}
+			ajaxWait(safoComponentVO);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
 		}
-		if ("select".equals(tagName)) {
-			clickSelectOption(webElement, valueToPut);
-		} else if (!"submit".equals(attributeType)) {
-			webElement.sendKeys(valueToPut);
-		}
-		if (safoComponentVO.isForceLostFocus()) {
-			runOnChange(webElement);
-		}
-		if (safoComponentVO.isForceBlur()) {
-			runOnBlur(webElement);
-		}
-		ajaxWait(safoComponentVO);
+
 	}
 
 	private boolean clearBefore(WebElement webElement, SafoComponentVO safoComponentVO) {
