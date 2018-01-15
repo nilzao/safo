@@ -24,12 +24,12 @@ public @interface SafoComponent {
 
 	public int order() default 999;
 
-	public boolean forceLostFocus() default false;
+	public boolean forceLostFocus() default true;
 
-	public boolean clearBefore() default false;
+	public boolean clearBefore() default true;
 
-	public boolean ajaxWait() default false;
+	public boolean ajaxWait() default true;
 
-	public boolean forceBlur() default false;
+	public boolean forceBlur() default true;
 
 }
