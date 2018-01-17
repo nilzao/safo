@@ -60,6 +60,7 @@ public class FieldsToFill {
 			componentToFindVO.setForceBlur(compToFindAnnotation.forceBlur());
 			componentToFindVO.setAjaxWait(compToFindAnnotation.ajaxWait());
 			componentToFindVO.setClearBefore(compToFindAnnotation.clearBefore());
+			componentToFindVO.setForceMouseUp(compToFindAnnotation.forceMouseUp());
 			compToFind.add(componentToFindVO);
 		}
 	}

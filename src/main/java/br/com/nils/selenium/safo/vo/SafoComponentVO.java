@@ -12,6 +12,7 @@ public class SafoComponentVO implements Comparable<SafoComponentVO> {
 	private boolean forceBlur;
 	private boolean ajaxWait;
 	private boolean clearBefore;
+	private boolean forceMouseUp;
 
 	public Object getValueToPut() {
 		return valueToPut;
@@ -91,6 +92,14 @@ public class SafoComponentVO implements Comparable<SafoComponentVO> {
 
 	public void setForceBlur(boolean forceBlur) {
 		this.forceBlur = forceBlur;
+	}
+
+	public boolean isForceMouseUp() {
+		return forceMouseUp;
+	}
+
+	public void setForceMouseUp(boolean forceMouseUp) {
+		this.forceMouseUp = forceMouseUp;
 	}
 
 	@Override

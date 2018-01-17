@@ -56,6 +56,9 @@ public class SafoWebDriver {
 		scrollAuto.scrollAuto(remoteWebDriver, webElement);
 		webElement.click();
 		try {
+			if (safoComponentVO.isForceMouseUp()) {
+				runOnMouseUp(webElement);
+			}
 			if (clearBefore(webElement, safoComponentVO)) {
 				return;
 			}
@@ -130,6 +133,14 @@ public class SafoWebDriver {
 		parent.click();
 		JavascriptExecutor jsExecutor = (JavascriptExecutor) remoteWebDriver;
 		jsExecutor.executeScript("$(arguments[0]).blur();", webElement);
+	}
+
+	private void runOnMouseUp(WebElement webElement) {
+		WebElement parent = webElement.findElement(By.xpath("./.."));
+		parent.click();
+		JavascriptExecutor jsExecutor = (JavascriptExecutor) remoteWebDriver;
+		jsExecutor.executeScript("$(arguments[0]).mousedown();", webElement);
+		jsExecutor.executeScript("$(arguments[0]).mouseup();", webElement);
 	}
 
 	public void clickSelectOption(WebElement select, String text) {

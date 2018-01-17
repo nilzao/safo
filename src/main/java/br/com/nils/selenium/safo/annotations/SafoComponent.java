@@ -32,4 +32,6 @@ public @interface SafoComponent {
 
 	public boolean forceBlur() default true;
 
+	public boolean forceMouseUp() default false;
+
 }
