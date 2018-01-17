@@ -63,11 +63,11 @@ public class SafoWebDriver {
 		scrollAuto.scrollAuto(remoteWebDriver, webElement);
 		webElement.click();
 		try {
-			if (safoComponentVO.isForceMouseUp()) {
-				runOnMouseUp(webElement);
-			}
 			if (clearBefore(webElement, safoComponentVO)) {
 				return;
+			}
+			if (safoComponentVO.isForceMouseUp()) {
+				runOnMouseUp(webElement);
 			}
 			if ("select".equals(tagName)) {
 				clickSelectOption(webElement, valueToPut);
