@@ -36,7 +36,14 @@ public class SafoWebDriver {
 			webElement = remoteWebDriver.findElementByClassName(className);
 		}
 		if (id != null && !id.isEmpty()) {
-			webElement = remoteWebDriver.findElementById(id);
+			try {
+				webElement = remoteWebDriver.findElementById(id);
+			} catch (Exception e) {
+				System.out.println("can't findElementById(" + id + ") trying findElement(By.name(" + id + ")");
+				System.out.println("-----");
+				System.err.println(e.getMessage());
+				webElement = remoteWebDriver.findElement(By.name(id));
+			}
 		}
 		return webElement;
 	}
