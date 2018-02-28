@@ -53,6 +53,7 @@ public class SafoWebDriver {
 		if (isSafoValueNull(safoComponentVO)) {
 			return;
 		}
+		ajaxWait(safoComponentVO);
 		WebElement webElement = findElementBySafoComp(safoComponentVO);
 		if (!webElement.isEnabled() || !webElement.isDisplayed()) {
 			return;
@@ -62,23 +63,28 @@ public class SafoWebDriver {
 		String attributeType = webElement.getAttribute("type");
 		scrollAuto.scrollAuto(remoteWebDriver, webElement);
 		webElement.click();
+		ajaxWait(safoComponentVO);
 		try {
 			if (clearBefore(webElement, safoComponentVO)) {
 				return;
 			}
 			if (safoComponentVO.isForceMouseUp()) {
 				runOnMouseUp(webElement);
+				ajaxWait(safoComponentVO);
 			}
 			if ("select".equals(tagName)) {
 				clickSelectOption(webElement, valueToPut);
 			} else if (!"submit".equals(attributeType)) {
 				webElement.sendKeys(valueToPut);
 			}
+			ajaxWait(safoComponentVO);
 			if (safoComponentVO.isForceLostFocus()) {
 				runOnChange(webElement);
+				ajaxWait(safoComponentVO);
 			}
 			if (safoComponentVO.isForceBlur()) {
 				runOnBlur(webElement);
+				ajaxWait(safoComponentVO);
 			}
 			ajaxWait(safoComponentVO);
 		} catch (Exception e) {
