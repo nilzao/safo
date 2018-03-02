@@ -2,12 +2,22 @@ package br.com.nils.selenium.safo.util;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.InvalidElementStateException;
+import org.openqa.selenium.JavascriptException;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.Wait;
+
+import com.google.common.base.Function;
 
 import br.com.nils.selenium.safo.reflection.FieldsToFill;
 import br.com.nils.selenium.safo.vo.SafoComponentVO;
@@ -41,11 +51,31 @@ public class SafoWebDriver {
 			} catch (Exception e) {
 				System.out.println("can't findElementById(" + id + ") trying findElement(By.name(" + id + ")");
 				System.out.println("-----");
-				System.err.println(e.getMessage());
 				webElement = remoteWebDriver.findElement(By.name(id));
 			}
 		}
 		return webElement;
+	}
+
+	public WebElement findElementBySafoCompWaiting(SafoComponentVO safoComponentVO) {
+		remoteWebDriver.manage().timeouts().implicitlyWait(100L, TimeUnit.MILLISECONDS);
+		Wait<WebDriver> wait = new FluentWait<WebDriver>(remoteWebDriver).withTimeout(30, TimeUnit.SECONDS).pollingEvery(100, TimeUnit.MILLISECONDS)
+				.ignoring(StaleElementReferenceException.class);
+		try {
+			wait.until(new Function<WebDriver, WebElement>() {
+				public WebElement apply(WebDriver driver) {
+					WebElement findElementBySafoComp = findElementBySafoComp(safoComponentVO);
+					if (findElementBySafoComp != null) {
+						throw new WebDriverException("found it");
+					}
+					return findElementBySafoComp;
+				}
+			});
+		} catch (WebDriverException e) {
+			// wait ended
+		}
+		remoteWebDriver.manage().timeouts().implicitlyWait(5000L, TimeUnit.MILLISECONDS);
+		return findElementBySafoComp(safoComponentVO);
 	}
 
 	public void fillWithSafoComp(SafoComponentVO safoComponentVO) {
@@ -54,7 +84,7 @@ public class SafoWebDriver {
 			return;
 		}
 		ajaxWait(safoComponentVO);
-		WebElement webElement = findElementBySafoComp(safoComponentVO);
+		WebElement webElement = findElementBySafoCompWaiting(safoComponentVO);
 		if (!webElement.isEnabled() || !webElement.isDisplayed()) {
 			return;
 		}
@@ -87,22 +117,34 @@ public class SafoWebDriver {
 				ajaxWait(safoComponentVO);
 			}
 			ajaxWait(safoComponentVO);
+		} catch (StaleElementReferenceException e) {
+			System.out.println("StaleElementReferenceException\n" + safoComponentVO.toString() + "\n");
+		} catch (InvalidElementStateException e) {
+			System.out.println("InvalidElementStateException\n" + safoComponentVO.toString() + "\n");
+		} catch (JavascriptException e) {
+			System.out.println("JavascriptException\n" + safoComponentVO.toString() + "\n");
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
+			// e.printStackTrace()
 		}
 
 	}
 
 	private boolean clearBefore(WebElement webElement, SafoComponentVO safoComponentVO) {
-		if (safoComponentVO.isClearBefore()) {
-			if ("select".equals(webElement.getTagName())) {
-				Select select = new Select(webElement);
-				select.selectByIndex(0);
-			} else {
-				webElement.clear();
+		try {
+			if (safoComponentVO.isClearBefore()) {
+				if ("select".equals(webElement.getTagName())) {
+					Select select = new Select(webElement);
+					select.selectByIndex(0);
+				} else {
+					webElement.clear();
+				}
+				ajaxWait(safoComponentVO);
+				clearBefore(safoComponentVO);
+				return true;
 			}
-			clearBefore(safoComponentVO);
-			return true;
+		} catch (StaleElementReferenceException e) {
+			// ignore
 		}
 		return false;
 	}
@@ -116,6 +158,7 @@ public class SafoWebDriver {
 	private void ajaxWait(SafoComponentVO safoComponentVO) {
 		if (safoComponentVO.isAjaxWait()) {
 			ajaxWait.ajaxWait(remoteWebDriver);
+			ajaxWait.reloadWait(this, safoComponentVO);
 		}
 	}
 
@@ -183,6 +226,10 @@ public class SafoWebDriver {
 			}
 		}
 		return false;
+	}
+
+	public RemoteWebDriver getRemoteWebDriver() {
+		return remoteWebDriver;
 	}
 
 }
