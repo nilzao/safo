@@ -1,5 +1,8 @@
 package br.com.nils.selenium.safo.vo;
 
+import br.com.nils.selenium.safo.util.ISafoIntercept;
+import br.com.nils.selenium.safo.util.SafoIntercept;
+
 public class SafoComponentVO implements Comparable<SafoComponentVO> {
 
 	private String id;
@@ -13,6 +16,7 @@ public class SafoComponentVO implements Comparable<SafoComponentVO> {
 	private boolean ajaxWait;
 	private boolean clearBefore;
 	private boolean forceMouseUp;
+	private ISafoIntercept safoIntecept = new SafoIntercept();
 
 	public Object getValueToPut() {
 		return valueToPut;
@@ -102,6 +106,14 @@ public class SafoComponentVO implements Comparable<SafoComponentVO> {
 		this.forceMouseUp = forceMouseUp;
 	}
 
+	public ISafoIntercept getSafoIntecept() {
+		return safoIntecept;
+	}
+
+	public void setSafoIntecept(ISafoIntercept safoIntecept) {
+		this.safoIntecept = safoIntecept;
+	}
+
 	@Override
 	public String toString() {
 		return "id: [" + id + "], xpath: [" + xpath + "], className: [" + className + "], resultPosition: [" + resultPosition + " order: " + order + "]" + "] valueToPut: ["
@@ -114,6 +126,31 @@ public class SafoComponentVO implements Comparable<SafoComponentVO> {
 			return 1;
 		}
 		return -1;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SafoComponentVO other = (SafoComponentVO) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
 }

@@ -169,12 +169,25 @@ public class SafoWebDriver {
 		return false;
 	}
 
-	public void fillWithSerializable(Serializable object) {
+	public List<SafoComponentVO> getSafoList(Serializable object) {
 		FieldsToFill fieldsToFill = new FieldsToFill(object);
-		List<SafoComponentVO> compToFind = fieldsToFill.getSafoComponentList();
-		for (SafoComponentVO componentToFindVO : compToFind) {
-			fillWithSafoComp(componentToFindVO);
+		return fieldsToFill.getSafoComponentList();
+	}
+
+	public void fillWithSafoList(List<SafoComponentVO> safoList) {
+		for (SafoComponentVO componentToFindVO : safoList) {
+			ISafoIntercept safoIntercept = componentToFindVO.getSafoIntecept();
+			if (safoIntercept.fill()) {
+				safoIntercept.before();
+				fillWithSafoComp(componentToFindVO);
+				safoIntercept.after();
+			}
 		}
+	}
+
+	public void fillWithSerializable(Serializable object) {
+		List<SafoComponentVO> safoList = getSafoList(object);
+		fillWithSafoList(safoList);
 	}
 
 	public void runOnChange(WebElement webElement) {
