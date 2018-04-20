@@ -245,4 +245,16 @@ public class SafoWebDriver {
 		return remoteWebDriver;
 	}
 
+	public void scrollAuto(WebElement webElement) {
+		scrollAuto.scrollAuto(remoteWebDriver, webElement);
+	}
+
+	public void waitAjax() {
+		ajaxWait.ajaxWait(remoteWebDriver);
+	}
+
+	public void waitReload(SafoComponentVO safoComponentVO) {
+		ajaxWait.reloadWait(this, safoComponentVO);
+	}
+
 }
