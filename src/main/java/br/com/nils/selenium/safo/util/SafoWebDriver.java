@@ -13,9 +13,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.common.base.Function;
 
@@ -178,6 +180,7 @@ public class SafoWebDriver {
 		for (SafoComponentVO componentToFindVO : safoList) {
 			ISafoIntercept safoIntercept = componentToFindVO.getSafoIntecept();
 			if (safoIntercept.fill()) {
+				waitForLoad();
 				safoIntercept.before();
 				fillWithSafoComp(componentToFindVO);
 				safoIntercept.after();
@@ -257,4 +260,13 @@ public class SafoWebDriver {
 		ajaxWait.reloadWait(this, safoComponentVO);
 	}
 
+	public void waitForLoad() {
+		ExpectedCondition<Boolean> pageLoadCondition = new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver driver) {
+				return ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
+			}
+		};
+		WebDriverWait wait = new WebDriverWait(remoteWebDriver, 30);
+		wait.until(pageLoadCondition);
+	}
 }
