@@ -8,4 +8,6 @@ public interface ISafoIntercept {
 
 	void after();
 
+	public void setWebDriver(SafoWebDriver safoWebDriver);
+
 }

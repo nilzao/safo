@@ -17,4 +17,9 @@ public class SafoIntercept implements ISafoIntercept {
 		//
 	}
 
+	@Override
+	public void setWebDriver(SafoWebDriver safoWebDriver) {
+		// TODO Auto-generated method stub
+	}
+
 }
